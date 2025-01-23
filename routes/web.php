@@ -27,5 +27,5 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('chirps', ChirpController::class)
     ->only(['index', 'store', 'update', 'destroy'])
-    ->middleware(['auth', 'verified', 'role_or_permission: menu-chirp|admin']);
+    ->middleware(['auth', 'verified', 'role_or_permission:menu-chirp|admin']);
 require __DIR__.'/auth.php';

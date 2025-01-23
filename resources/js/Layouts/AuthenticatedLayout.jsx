@@ -31,9 +31,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                     Dashboard
                                 </NavLink>
                                 {user?.permissions.includes("menu-chirp") && (
-                                <NavLink href={route('chirps.index')} active={route().current('chirps.index')}>
-                                    Chirps
-                                </NavLink>
+                                        <NavLink href={route('chirps.index')} active={route().current('chirps.index')}>
+                                            Chirps
+                                        </NavLink>
                                 )}
                             </div>
                         </div>
