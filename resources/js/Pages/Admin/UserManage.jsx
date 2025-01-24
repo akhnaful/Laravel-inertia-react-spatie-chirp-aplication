@@ -5,6 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Inertia } from '@inertiajs/inertia';
 import { AlertCircle, Settings, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { usePage } from "@inertiajs/react";
+import { ToastContainer, toast } from 'react-toastify';
+import { useEffect } from "react";
+import 'react-toastify/dist/ReactToastify.css'
 import {
     Table,
     TableBody,
@@ -18,22 +22,32 @@ import {
 
 export default function UserManage({users}) {
 
-    const [searchTerm, setSearchTerm] = useState("");
+    const { flash } = usePage().props;
 
+    
+        useEffect(() => {
+            console.log("pesan",flash);
+            if (flash) {
+            toast(flash);
+            }
+        },[flash]);
+    
+
+    const [searchTerm, setSearchTerm] = useState("");
     // Filter users berdasarkan input pencarian
     const filteredUsers = users.filter(user =>
         user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const handleDelete = (userId) => {
+    const handleDelete = (id) => {
         if (confirm("Are you sure you want to delete this user?")) {
-            destroy(route("dashboard.admin.users.destroy", userId));
+            Inertia.delete(route('usermanager.destroy', id));
         }
     };
-
+    
     return (
-        
+
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
@@ -41,6 +55,7 @@ export default function UserManage({users}) {
                 </h2>
             }
         >
+        <ToastContainer />
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                             <Input 
@@ -48,10 +63,11 @@ export default function UserManage({users}) {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="mb-3 max-w-sm overflow-hidden bg-white shadow-sm sm:rounded-lg"
-                        />
+                            />
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                    <ToastContainer />
                     <Head title="UserManage" />
-
+                    
                             <Table>
                                 <TableHeader>
                                     <TableRow>
@@ -73,12 +89,8 @@ export default function UserManage({users}) {
                                             <TableCell>{user.role}</TableCell>
                                             <TableCell>{user.status}</TableCell>
                                             <TableCell className="m-2">
-                                                <Button variant="destructive" onClick={() => handleDelete(user.id)} className="mr-2">
-                                                    Delete
-                                                </Button>
-                                                <Button variant="secondary" onClick={() => handleStatusChange(user.id)}>
-                                                    Deactivate
-                                                </Button>
+                                            <Button onClick={() => handleDelete(user.id)} variant="destructive" >Delete</Button>
+                                                <Button onClick={() => Inertia.put(`/admin/users/${user.id}`, { status: 'inactive' })} className="ml-2">Deactivate</Button>
                                             </TableCell>
                                         </TableRow>
                                         ))

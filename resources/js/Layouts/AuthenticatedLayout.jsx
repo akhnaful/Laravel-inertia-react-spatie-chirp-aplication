@@ -8,8 +8,6 @@ import { Menu_Admin } from './Menu_Admin';
 
 export default function AuthenticatedLayout({ header, children,}) {
     const user = usePage().props.auth.user;
-    console.log("User object:", user);
-    console.log("User role:", user?.roles);
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);

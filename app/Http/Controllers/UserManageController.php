@@ -17,7 +17,8 @@ class UserManageController extends Controller
     {
         $users = User::withCount('chirps')->get();
         return Inertia::render('Admin/UserManage', [
-            'users' => $users
+            'users' => $users,
+            'flash' => session('success')
         ]);
     }
 
@@ -65,10 +66,11 @@ class UserManageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $usermanager)
     {
         //
-        $user->delete();
-        return back()->with('success', 'User deleted successfully.');
+        $usermanager->delete();
+        return redirect()->route('usermanager.index')->with('success', 'User deleted successfully.');
+
     }
 }
