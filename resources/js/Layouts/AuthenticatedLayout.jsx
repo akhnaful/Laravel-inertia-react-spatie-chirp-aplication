@@ -4,9 +4,12 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import { Menu_Admin } from './Menu_Admin';
 
-export default function AuthenticatedLayout({ header, children }) {
+export default function AuthenticatedLayout({ header, children,}) {
     const user = usePage().props.auth.user;
+    console.log("User object:", user);
+    console.log("User role:", user?.roles);
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -31,11 +34,24 @@ export default function AuthenticatedLayout({ header, children }) {
                                     Dashboard
                                 </NavLink>
                                 {user?.permissions.includes("menu-chirp") && (
-                                        <NavLink href={route('chirps.index')} active={route().current('chirps.index')}>
-                                            Chirps
-                                        </NavLink>
+                                <NavLink href={route('chirps.index')} active={route().current('chirps.index')}>
+                                    Chirps
+                                </NavLink>
+                                )}  
+                                {user?.roles?.includes("admin") && (
+                                    <>
+                                        {Menu_Admin.map((data, idx) => (
+                                            <NavLink
+                                                key={idx}
+                                                href={route(data.path)}
+                                                active={route().current(data.path)}
+                                            >
+                                                {data.name}
+                                            </NavLink>
+                                        ))}
+                                    </>
                                 )}
-                            </div>
+                                </div>
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">

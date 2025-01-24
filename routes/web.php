@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserManageController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -28,4 +29,10 @@ Route::middleware('auth')->group(function () {
 Route::resource('chirps', ChirpController::class)
     ->only(['index', 'store', 'update', 'destroy'])
     ->middleware(['auth', 'verified', 'role_or_permission:menu-chirp|admin']);
+    
+Route::middleware(['auth', 'role:admin'])
+    ->resource('usermanager', UserManageController::class)
+    ->only(['index', 'update', 'destroy'])
+;
+
 require __DIR__.'/auth.php';
