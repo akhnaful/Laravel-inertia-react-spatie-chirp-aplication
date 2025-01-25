@@ -1,9 +1,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { useState } from "react";
-import { Head, useForm } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 import { Button } from "@/components/ui/button";
 import { Inertia } from '@inertiajs/inertia';
-import { AlertCircle, Settings, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { usePage } from "@inertiajs/react";
 import { ToastContainer, toast } from 'react-toastify';
@@ -40,6 +39,7 @@ export default function UserManage({users}) {
     );
 
     const handleRoleChange = (id, newRole) => {
+    // Fitur merubah role user
         Inertia.put(route('usermanager.update', { id: id }), { role: newRole }, {
             onSuccess: () => toast.success("User role updated successfully!"),
             onError: () => toast.error("Failed to update role!"),
@@ -47,6 +47,7 @@ export default function UserManage({users}) {
     };
 
     const handleStatusChange = (id, currentStatus) => {
+    // Fitur merubah status user
         Inertia.put(route('usermanager.update', { id: id }), { 
             status: currentStatus === 'active' ? 'banned' : 'active' 
         }, {
@@ -56,6 +57,7 @@ export default function UserManage({users}) {
     };
 
     const handleDelete = (id) => {
+    // fitur delete user
         if (confirm("Are you sure you want to delete this user?")) {
             Inertia.delete(route('usermanager.destroy', id), {
                 onSuccess: () => toast.success("User deleted successfully!"),

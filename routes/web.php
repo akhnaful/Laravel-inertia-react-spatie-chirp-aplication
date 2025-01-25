@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminChirpController;
 use App\Http\Controllers\UserManageController;
 
 Route::get('/', function () {
@@ -34,5 +35,14 @@ Route::middleware(['auth', 'role:admin'])
     ->resource('usermanager', UserManageController::class)
     ->only(['index', 'update', 'destroy'])
 ;
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/chirps', [AdminChirpController::class, 'index'])->name('admin.chirps.index');
+    Route::delete('/admin/chirps/{chirp}', [AdminChirpController::class, 'destroy'])->name('admin.chirps.destroy');
+    Route::put('/admin/chirps/{chirp}', [AdminChirpController::class, 'markAsReviewed'])->name('admin.chirps.review');
+});
 
+Route::middleware(['auth', 'role:admin'])
+    ->resource('adminChirps', AdminChirpController::class)
+    ->only(['index', 'update', 'destroy'])
+;
 require __DIR__.'/auth.php';

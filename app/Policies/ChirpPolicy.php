@@ -5,9 +5,11 @@ namespace App\Policies;
 use App\Models\Chirp;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ChirpPolicy
 {
+    use HandlesAuthorization;
     /**
      * Determine whether the user can view any models.
      */
@@ -37,7 +39,7 @@ class ChirpPolicy
      */
     public function update(User $user, Chirp $chirp): bool
     {
-        return $chirp->user()->is($user);
+        return $chirp->user_id === $user->id || $user->hasRole('admin');
     }
 
     /**
@@ -45,8 +47,8 @@ class ChirpPolicy
      */
     public function delete(User $user, Chirp $chirp): bool
     {
-        return $this->update($user, $chirp);
-    }
+        return $this->update($user, $chirp) || $user->hasRole('admin');
+    } 
 
     /**
      * Determine whether the user can restore the model.
