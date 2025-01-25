@@ -57,10 +57,19 @@ class UserManageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function updateStatus(Request $request, User $user)
+    public function update(Request $request, User $usermanager)
     {
-        $user->update(['status' => $request->status]);
-        return back()->with('success', 'User status updated.');
+        $request->validate([
+            'status' => 'in:active,banned',
+            'role' => 'in:user,moderator,admin',
+        ]);
+    
+        $usermanager->update([
+            'status' => $request->status ?? $usermanager->status,
+            'role' => $request->role ?? $usermanager->role,
+        ]);
+    
+        return redirect()->back()->with('success', 'User updated successfully.');
     }
 
     /**

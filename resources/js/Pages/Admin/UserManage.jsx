@@ -26,7 +26,6 @@ export default function UserManage({users}) {
 
     
         useEffect(() => {
-            console.log("pesan",flash);
             if (flash) {
             toast(flash);
             }
@@ -40,9 +39,28 @@ export default function UserManage({users}) {
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const handleRoleChange = (id, newRole) => {
+        Inertia.put(route('usermanager.update', { id: id }), { role: newRole }, {
+            onSuccess: () => toast.success("User role updated successfully!"),
+            onError: () => toast.error("Failed to update role!"),
+        });
+    };
+
+    const handleStatusChange = (id, currentStatus) => {
+        Inertia.put(route('usermanager.update', { id: id }), { 
+            status: currentStatus === 'active' ? 'banned' : 'active' 
+        }, {
+            onSuccess: () => toast.success("User status updated successfully!"),
+            onError: () => toast.error("Failed to update status!"),
+        });
+    };
+
     const handleDelete = (id) => {
         if (confirm("Are you sure you want to delete this user?")) {
-            Inertia.delete(route('usermanager.destroy', id));
+            Inertia.delete(route('usermanager.destroy', id), {
+                onSuccess: () => toast.success("User deleted successfully!"),
+                onError: () => toast.error("Failed to delete user!"),
+            });
         }
     };
     
@@ -55,7 +73,7 @@ export default function UserManage({users}) {
                 </h2>
             }
         >
-        <ToastContainer />
+        {/* <ToastContainer /> */}
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                             <Input 
@@ -89,8 +107,29 @@ export default function UserManage({users}) {
                                             <TableCell>{user.role}</TableCell>
                                             <TableCell>{user.status}</TableCell>
                                             <TableCell className="m-2">
-                                            <Button onClick={() => handleDelete(user.id)} variant="destructive" >Delete</Button>
-                                                <Button onClick={() => Inertia.put(`/admin/users/${user.id}`, { status: 'inactive' })} className="ml-2">Deactivate</Button>
+
+                                                {/* fitur */}
+                                            
+                                                <select
+                                                    value={user.role}
+                                                    onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                                                    className="border rounded p-2 mr-2"
+                                                >
+                                                    <option value="user">User</option>
+                                                    <option value="moderator">Moderator</option>
+                                                    <option value="admin">Admin</option>
+                                                </select>
+
+                                                <Button onClick={() => handleStatusChange(user.id, user.status)} className="mr-2">
+                                                    {user.status === 'active' ? "Deactivate" : "Activate"}
+                                                </Button>
+
+                                                <Button onClick={() => handleDelete(user.id)} variant="destructive" >Delete</Button>
+                                            
+
+
+                                                {/* fitur */}
+
                                             </TableCell>
                                         </TableRow>
                                         ))
