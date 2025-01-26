@@ -39,7 +39,7 @@ class ChirpPolicy
      */
     public function update(User $user, Chirp $chirp): bool
     {
-        return $chirp->user_id === $user->id || $user->hasRole('admin');
+        return $user->id === $chirp->user_id || $user->hasRole('admin');
     }
 
     /**

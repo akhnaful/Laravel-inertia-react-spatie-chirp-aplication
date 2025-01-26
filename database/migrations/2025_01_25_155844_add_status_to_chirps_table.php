@@ -12,15 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('chirps', function (Blueprint $table) {
-            $table->boolean('is_reviewed')->default(false);
+            $table->boolean("marked")->default(false);
         });
     }
-    
+
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('chirps', function (Blueprint $table) {
-            $table->dropColumn('is_reviewed');
+            $table->dropColumn("marked");   
         });
     }
-    
 };

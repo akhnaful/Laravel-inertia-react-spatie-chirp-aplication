@@ -38,7 +38,7 @@ Route::middleware(['auth', 'role:admin'])
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/chirps', [AdminChirpController::class, 'index'])->name('admin.chirps.index');
     Route::delete('/admin/chirps/{chirp}', [AdminChirpController::class, 'destroy'])->name('admin.chirps.destroy');
-    Route::put('/admin/chirps/{chirp}', [AdminChirpController::class, 'markAsReviewed'])->name('admin.chirps.review');
+    Route::put('/admin/chirps/{chirp}', [AdminChirpController::class, 'markAsReviewed'])->name('admin.chirps.update');
 });
 
 Route::middleware(['auth', 'role:admin'])

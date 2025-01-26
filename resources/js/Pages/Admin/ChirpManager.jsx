@@ -7,6 +7,8 @@ import { Inertia } from '@inertiajs/inertia';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
+import { Pin, PinOff, Trash } from "lucide-react";
+import axios from 'axios';
 
 export default function ChirpManager() {
     const { chirps } = usePage().props;
@@ -16,23 +18,17 @@ export default function ChirpManager() {
             Inertia.delete(route('admin.chirps.destroy', id));
         }
     };
-
-
-    const handleReview = (id) => {
-        console.log(`Reviewing chirp ID: ${id}`);
-        Inertia.put(route('admin.chirps.review', id), {}, {
+    const handleReview = (chirpId) => {
+        Inertia.put(route("admin.chirps.update", chirpId), {
             onSuccess: () => {
-                toast.success('Chirp marked as reviewed successfully.');
+                toast.success('Status berhasil diperbarui!');
             },
-            onError: (error) => {
-                if (error.status === 409) {
-                    toast.error('Chirp is already reviewed.');
-                } else {
-                    toast.error('Failed to mark chirp as reviewed.');
-                }
+            onError: (errors) => {
+                toast.error('Gagal memperbarui status.');
             }
         });
     };
+
     return (
         <AuthenticatedLayout
             header={
@@ -46,12 +42,13 @@ export default function ChirpManager() {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div>
-                            <table className="w-full border-collapse border border-gray-300">
+                            <table className="w-full border-collapse border border-gray-300">   
                                 <thead>
                                     <tr>
                                         <th className="border p-2">User</th>
                                         <th className="border p-2">Chirp</th>
                                         <th className="border p-2">Date</th>
+                                        <th className="border p-2">Status</th>
                                         <th className="border p-2">Actions</th>
                                     </tr>
                                 </thead>
@@ -62,16 +59,21 @@ export default function ChirpManager() {
                                             <td className="border p-2" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(chirp.message) }} />
                                             <td className="border p-2">{new Date(chirp.created_at).toLocaleDateString()}</td>
                                             <td className="border p-2">
-                                                {chirp.is_reviewed ? (
-                                                    <span className="text-green-500">Reviewed</span>
-                                                ) : (
-                                                    <span className="text-red-500">Pending</span>
+                                                {chirp.marked === 1 && (
+                                                    <div
+                                                        className={`px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 flex items-center space-x-2`}
+                                                    >
+                                                        <span>Marked</span> 
+                                                    </div>
                                                 )}
                                             </td>
                                             <td className="border p-2">
                                                 <Button onClick={() => handleDelete(chirp.id)} className="m-1 bg-red-500 text-white">Delete</Button>
-                                                <Button onClick={() => handleReview(chirp.id)} className="m-1 bg-green-500 text-white">Mark Reviewed</Button>
+                                                <Button onClick={() => handleReview(chirp.id)} className="m-1 bg-green-500 text-white">
+                                                    {chirp.marked ? 'Remove Mark' : 'Mark'}
+                                                </Button>          
                                             </td>
+                                            
                                         </tr>
                                     ))}
                                 </tbody>

@@ -5,6 +5,6 @@ export const Menu_Admin = [
     },
     {
         name: "Chirp Manager",
-        path: "adminChirps.index",
+        path: "admin.chirps.index",
     },
 ];
