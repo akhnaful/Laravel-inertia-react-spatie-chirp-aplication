@@ -8,6 +8,7 @@ import { useForm, usePage } from '@inertiajs/react';
 import DOMPurify from 'dompurify'; // Import DOMPurify
 import ReactQuill from 'react-quill'; // Import ReactQuill 
 import 'react-quill/dist/quill.snow.css'; // Tambahkan css Quill
+import ReportButton from '@/Components/ReportButton';
 
 dayjs.extend(relativeTime);
 
@@ -38,6 +39,11 @@ export default function Chirp({ chirp }) {
                             <small className="text-sm text-gray-600"> &middot; edited</small>
                         )}
                     </div>
+                    <ReportButton 
+                                    type="chirp" 
+                                    id={chirp.id} 
+                                    className="text-red-500 hover:text-red-700"
+                                />
                     {chirp.user.id === auth.user.id && (
                         <Dropdown>
                             <Dropdown.Trigger>
