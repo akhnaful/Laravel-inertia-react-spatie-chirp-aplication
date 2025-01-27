@@ -18,7 +18,6 @@ class UserManageController extends Controller
         $users = User::withCount('chirps')->get();
         return Inertia::render('Admin/UserManage', [
             'users' => $users,
-            'flash' => session('success')
         ]);
     }
 
@@ -69,7 +68,7 @@ class UserManageController extends Controller
             'role' => $request->role ?? $usermanager->role,
         ]);
     
-        return redirect()->back()->with('success', 'User updated successfully.');
+        return redirect()->back()->with(['success' => 'User updated successfully.']);
     }
 
     /**
@@ -79,7 +78,7 @@ class UserManageController extends Controller
     {
         //
         $usermanager->delete();
-        return redirect()->route('usermanager.index')->with('success', 'User deleted successfully.');
+        return redirect()->back()->with(['success'=> 'User deleted successfully.']);
 
     }
 }

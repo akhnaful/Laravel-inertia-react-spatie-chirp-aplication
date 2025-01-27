@@ -6,27 +6,32 @@ import DOMPurify from 'dompurify';
 import { Inertia } from '@inertiajs/inertia';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import React from 'react';
-import { Pin, PinOff, Trash } from "lucide-react";
-import axios from 'axios';
+import React, { useState } from 'react'; 
+import { useEffect } from "react";
 
-export default function ChirpManager() {
+export default function ChirpManager({flash}) {
     const { chirps } = usePage().props;
+    // const [toastId, setToastId] = useState(null);
+
+    useEffect(() => {
+        if (flash.message.success) {
+        toast.success(flash.message.success);
+        }
+        if (flash.message.error) {
+            toast.error(flash.message.error);
+        }
+    },[flash]);
 
     const handleDelete = (id) => {
         if (confirm('Are you sure you want to delete this chirp?')) {
             Inertia.delete(route('admin.chirps.destroy', id));
         }
     };
-    const handleReview = (chirpId) => {
-        Inertia.put(route("admin.chirps.update", chirpId), {
-            onSuccess: () => {
-                toast.success('Status berhasil diperbarui!');
-            },
-            onError: (errors) => {
-                toast.error('Gagal memperbarui status.');
-            }
-        });
+    const handleReview = (id) => {
+        // Tampilkan toast loading saat proses mulai
+        // const id = toast.loading("Memproses...");
+
+        Inertia.put(route("admin.chirps.update", id), {} );
     };
 
     return (
@@ -38,6 +43,7 @@ export default function ChirpManager() {
             }
         >
             <Head title=" Chirp Management" />
+            <ToastContainer />
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">

@@ -41,8 +41,4 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/admin/chirps/{chirp}', [AdminChirpController::class, 'markAsReviewed'])->name('admin.chirps.update');
 });
 
-Route::middleware(['auth', 'role:admin'])
-    ->resource('adminChirps', AdminChirpController::class)
-    ->only(['index', 'update', 'destroy'])
-;
 require __DIR__.'/auth.php';

@@ -4,7 +4,6 @@ import { Head } from "@inertiajs/react";
 import { Button } from "@/components/ui/button";
 import { Inertia } from '@inertiajs/inertia';
 import { Input } from "@/components/ui/input";
-import { usePage } from "@inertiajs/react";
 import { ToastContainer, toast } from 'react-toastify';
 import { useEffect } from "react";
 import 'react-toastify/dist/ReactToastify.css'
@@ -19,14 +18,17 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-export default function UserManage({users}) {
+export default function UserManage({users, flash}) {
 
-    const { flash } = usePage().props;
+    // const { flash } = usePage().props;
 
     
         useEffect(() => {
-            if (flash) {
-            toast(flash);
+            if (flash.message.success) {
+            toast.success(flash.message.success);
+            }
+            if (flash.message.error) {
+                toast.error(flash.message.error);
             }
         },[flash]);
     
@@ -41,8 +43,8 @@ export default function UserManage({users}) {
     const handleRoleChange = (id, newRole) => {
     // Fitur merubah role user
         Inertia.put(route('usermanager.update', { id: id }), { role: newRole }, {
-            onSuccess: () => toast.success("User role updated successfully!"),
-            onError: () => toast.error("Failed to update role!"),
+            // onSuccess: () => toast.success("User role updated successfully!"),
+            // onError: () => toast.error("Failed to update role!"),
         });
     };
 
@@ -51,8 +53,8 @@ export default function UserManage({users}) {
         Inertia.put(route('usermanager.update', { id: id }), { 
             status: currentStatus === 'active' ? 'banned' : 'active' 
         }, {
-            onSuccess: () => toast.success("User status updated successfully!"),
-            onError: () => toast.error("Failed to update status!"),
+            // onSuccess: () => toast.success("User status updated successfully!"),
+            // onError: () => toast.error("Failed to update status!"),
         });
     };
 
@@ -60,8 +62,8 @@ export default function UserManage({users}) {
     // fitur delete user
         if (confirm("Are you sure you want to delete this user?")) {
             Inertia.delete(route('usermanager.destroy', id), {
-                onSuccess: () => toast.success("User deleted successfully!"),
-                onError: () => toast.error("Failed to delete user!"),
+                // onSuccess: () => toast.success("User deleted successfully!"),
+                // onError: () => toast.error("Failed to delete user!"),
             });
         }
     };
@@ -85,8 +87,8 @@ export default function UserManage({users}) {
                             className="mb-3 max-w-sm overflow-hidden bg-white shadow-sm sm:rounded-lg"
                             />
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                    <ToastContainer />
                     <Head title="UserManage" />
+                    <ToastContainer />
                     
                             <Table>
                                 <TableHeader>
