@@ -7,4 +7,8 @@ export const Menu_Admin = [
         name: "Chirp Manager",
         path: "admin.chirps.index",
     },
+    {
+        name: "Report Manager",
+        path: "report.index",
+    },
 ];

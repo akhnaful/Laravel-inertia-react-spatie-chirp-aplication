@@ -9,22 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('reporter_id')->constrained('users')->onDelete('cascade');
-            $table->morphs('reportable'); // Untuk Chirp (post) atau User
-            $table->text('reason');
-            $table->enum('status', ['pending', 'resolved'])->default('pending');
+            $table->string('reason');
+            $table->text('detail')->nullable();
+            $table->unsignedBigInteger('reported_id');
+            $table->string('reported_type');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('reports');
     }

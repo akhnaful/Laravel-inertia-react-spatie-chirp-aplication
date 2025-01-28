@@ -28,6 +28,6 @@ class Chirp extends Model
     
     public function reports()
     {
-        return $this->morphMany(Report::class, 'reportable');
+        return $this->morphMany(Report::class, 'reported');
     }
 }

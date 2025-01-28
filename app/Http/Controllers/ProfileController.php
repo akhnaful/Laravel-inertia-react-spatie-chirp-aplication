@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
+use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class ProfileController extends Controller
 {
@@ -60,4 +61,23 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+    public function report(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            'reason' => 'required|string|max:255',
+            'detail' => 'nullable|string',
+        ]);
+
+        $request->user()->reports()->create(
+            [
+                'reason' => $validated['reason'],
+                'detail' => $validated['detail'],
+                'reported_id' => $user->id,
+                'reported_type' => User::class,
+            ]
+        );
+
+        return Redirect::to(route("chirps.index"));
+    }
 }
+

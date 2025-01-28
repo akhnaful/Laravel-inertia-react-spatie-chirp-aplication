@@ -86,4 +86,22 @@ class ChirpController extends Controller
 
         return redirect(route('chirps.index'));
     }
+    public function report(Request $request, Chirp $chirp)
+    {
+        $validated = $request->validate(
+            [
+                'detail' => 'required|string',
+                'reason' => 'required|string|max:256',
+            ]
+        );
+        $request->user()->reports()->create(
+            [
+                'reason' => $validated['reason'],
+                'detail' => $validated['detail'],
+                'reported_id' => $chirp->id,
+                'reported_type' => Chirp::class,
+            ]
+        );
+        return redirect(route('chirps.index'));
+    }
 }

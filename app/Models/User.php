@@ -56,8 +56,19 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Chirp::class);
     }
+    /**
+     * Get all reports made by the user.
+     */
     public function reports()
     {
-    return $this->morphMany(Report::class, 'reportable');
+        return $this->hasMany(Report::class, 'reporter_id');
+    }
+
+    /**
+     * Get all reports against the user.
+     */
+    public function reported()
+    {
+        return $this->morphMany(Report::class, 'reported');
     }
 }

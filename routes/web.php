@@ -4,10 +4,10 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ChirpController;
-use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminChirpController;
 use App\Http\Controllers\UserManageController;
+use App\Http\Controllers\ReportManagerController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -41,15 +41,17 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/admin/chirps/{chirp}', [AdminChirpController::class, 'destroy'])->name('admin.chirps.destroy');
     Route::put('/admin/chirps/{chirp}', [AdminChirpController::class, 'markAsReviewed'])->name('admin.chirps.update');
 });
-// Untuk user biasa
-Route::post('/reports', [ReportController::class, 'store'])
-    ->middleware(['auth', 'verified'])
-    ->name('reports.store');
 
-// Untuk admin
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/reports', [ReportController::class, 'index'])->name('admin.reports.index');
-    Route::get('/admin/reports/{report}', [ReportController::class, 'show'])->name('admin.reports.show');
-    Route::post('/admin/reports/{report}/resolve', [ReportController::class, 'resolve'])->name('admin.reports.resolve');
-});
+Route::post("/chirps/{chirp}/report", [ChirpController::class, 'report'])
+    ->middleware(['auth', 'verified'])
+    ->name("chirps.report");
+
+Route::post("/user/{user}/report", [ProfileController::class, 'report'])
+    ->middleware(['auth', 'verified'])
+    ->name("user.report");
+
+Route::resource('report', ReportManagerController::class)
+    ->middleware(['auth', 'role:admin'])
+    ->only(['index', 'destroy', 'update']);
+
 require __DIR__.'/auth.php';

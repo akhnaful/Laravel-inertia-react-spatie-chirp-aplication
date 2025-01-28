@@ -8,7 +8,7 @@ import { useForm, usePage } from '@inertiajs/react';
 import DOMPurify from 'dompurify'; // Import DOMPurify
 import ReactQuill from 'react-quill'; // Import ReactQuill 
 import 'react-quill/dist/quill.snow.css'; // Tambahkan css Quill
-import ReportButton from '@/Components/ReportButton';
+import ReportModal from './ReportModal';
 
 dayjs.extend(relativeTime);
 
@@ -39,12 +39,7 @@ export default function Chirp({ chirp }) {
                             <small className="text-sm text-gray-600"> &middot; edited</small>
                         )}
                     </div>
-                    <ReportButton 
-                                    type="chirp" 
-                                    id={chirp.id} 
-                                    className="text-red-500 hover:text-red-700"
-                                />
-                    {chirp.user.id === auth.user.id && (
+                    
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <button>
@@ -54,6 +49,20 @@ export default function Chirp({ chirp }) {
                                 </button>
                             </Dropdown.Trigger>
                             <Dropdown.Content>
+                                {chirp.user.id !== auth.user.id && (
+                                    <>
+                                        <ReportModal
+                                            type="chirp"
+                                            targetId={chirp.id}
+                                        />
+                                        <ReportModal
+                                            type="user"
+                                            targetId={chirp.user.id}
+                                        />
+                                    </>
+                                )}
+                                {chirp.user.id === auth.user.id && (
+                                    <>
                                 <button
                                     className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:bg-gray-100 transition duration-150 ease-in-out"
                                     onClick={() => setEditing(true)}
@@ -63,9 +72,11 @@ export default function Chirp({ chirp }) {
                                 <Dropdown.Link as="button" href={route('chirps.destroy', chirp.id)} method="delete">
                                     Delete
                                 </Dropdown.Link>
+                                </>
+                                )}
                             </Dropdown.Content>
                         </Dropdown>
-                    )}
+                
                 </div>
                 {editing ? (
                     <form onSubmit={submit}>
