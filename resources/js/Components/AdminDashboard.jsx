@@ -2,10 +2,14 @@ import { router } from '@inertiajs/react'
 import { useEffect, useState } from 'react'
 import LineChart from './LineChart';
 
-const DashboardAdmin = ({ initialStats, chartData }) => {
+const DashboardAdmin = ({ initialStats,chartData }) => {
   const [timeFilter, setTimeFilter] = useState('daily')
   const [stats, setStats] = useState(initialStats)
+  console.log("Props dari Inertia:", { initialStats, chartData });
 
+useEffect(() => {
+  console.log("Props Data:", { initialStats, chartData });
+}, []);
   router.get(
     '/admin/dashboard',
     { timeFilter },
@@ -20,8 +24,7 @@ const DashboardAdmin = ({ initialStats, chartData }) => {
     }
   )
   
-// Di DashboardAdmin.jsx
-console.log('Received Chart Data:', chartData);
+
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="max-w-7xl mx-auto">
@@ -54,10 +57,9 @@ console.log('Received Chart Data:', chartData);
             <p className="text-3xl font-bold mt-2">{stats?.violationReports}</p>
           </div>
         </div>
-        <div className="p-6">
-      <h2 className="text-2xl mb-4">Statistik Aktivitas</h2>
+        <div className="p-6 bg-white rounded-lg mt-5 shadow">
       <LineChart data={chartData} />
-    </div>
+      </div>
       </div>
     </div>
   )

@@ -3,8 +3,9 @@ import { Head } from '@inertiajs/react';
 import { Link, usePage } from '@inertiajs/react';
 import DashboardAdmin from '@/Components/AdminDashboard'
 
-export default function Dashboard({ auth, stats }) {
+export default function Dashboard({ auth, stats, chartData }) {
     const { user } = auth;
+    
     // const user = usePage().props.auth.user;
     return (
         <AuthenticatedLayout
@@ -25,7 +26,7 @@ export default function Dashboard({ auth, stats }) {
                             </div>
                         )}
                         {user?.roles?.includes("admin") && (
-                            <DashboardAdmin initialStats={stats} />
+                            <DashboardAdmin initialStats={stats} chartData={chartData} />
                         )}
                     </div>
                 </div>

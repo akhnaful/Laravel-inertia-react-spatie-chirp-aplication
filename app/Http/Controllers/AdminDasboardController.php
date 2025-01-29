@@ -70,10 +70,10 @@ class AdminDasboardController extends Controller
                 }
                 break;
         }
-    
+        
         return Inertia::render('Dashboard', [
             'stats' => $stats,
-            'chartData' => $chartData
+            'chartData' => $chartData 
         ]);
     }
 }

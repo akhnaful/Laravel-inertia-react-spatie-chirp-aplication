@@ -21,6 +21,7 @@ ChartJS.register(
 );
 
 const LineChart = ({ data }) => {
+  console.log("Data yang diterima LineChart:", data);
   const options = {
     responsive: true,
     plugins: {
@@ -35,40 +36,30 @@ const LineChart = ({ data }) => {
   };
 
   const chartData = {
-    labels: data?.labels || ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+    labels: data?.labels,
     datasets: [
       {
         label: 'Pengguna Aktif',
-        data: data?.activeUsers || [0, 0, 0, 0, 0, 0, 0],
-        borderColor: '#FF6384',
-        fill: false
+        data: data?.activeUsers,
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
         label: 'Total Chirps',
-        data: data?.totalChirps || [0, 0, 0, 0, 0, 0, 0],
-        borderColor: '#36A2EB',
-        fill: false
+        data: data?.totalChirps,
+        borderColor: 'rgb(53, 162, 235)',
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
       {
-        label: 'Laporan',
-        data: data?.violationReports || [0, 0, 0, 0, 0, 0, 0],
-        borderColor: '#4BC0C0',
-        fill: false
-      }
-    ]
+        label: 'Laporan Pelanggaran',
+        data: data?.violationReports,
+        borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+      },
+    ],
   };
 
-  return (
-    <div className="h-96">
-      <Line 
-        data={chartData}
-        options={{
-          responsive: true,
-          maintainAspectRatio: false
-        }}
-      />
-    </div>
-  );
+  return <Line options={options} data={chartData} />;
 };
 
 export default LineChart;
