@@ -7,7 +7,7 @@ export default function AccountReport({ reports }) {
 
     const actionReport = (userId) => {
         if (confirm("Are you sure you want to banned this user?")) {
-            patch(route("dashboard.admin.report.update", userId), {
+            patch(route("report.update", userId), {
                 onSuccess: () => {
                     reset();
                 },

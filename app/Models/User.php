@@ -27,6 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'status',
         'role',
+        'last_active_at',
     ];
 
     /**
@@ -70,5 +71,17 @@ class User extends Authenticatable implements MustVerifyEmail
     public function reported()
     {
         return $this->morphMany(Report::class, 'reported');
+    }
+    protected $casts = [
+        'last_active_at' => 'datetime',
+    ];
+    
+    public function scopeActive($query, $minutes = 5)
+    {
+        return $query->where(
+            'last_active_at', 
+            '>=', 
+            now()->subMinutes($minutes)
+        );
     }
 }

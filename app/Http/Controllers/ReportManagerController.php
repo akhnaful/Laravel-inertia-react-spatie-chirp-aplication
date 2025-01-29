@@ -26,6 +26,7 @@ class ReportManagerController extends Controller
         
         $report->delete();
         return redirect(route('report.index'));
+        
     }
 
     /**
@@ -33,7 +34,7 @@ class ReportManagerController extends Controller
      */
     public function update(Report $report)
     {
-        Gate::authorize('is-admin', Auth::user());
+        
         $reported = $report->reported();
         if ($report->reported_type == User::class) {
             $reported->update([

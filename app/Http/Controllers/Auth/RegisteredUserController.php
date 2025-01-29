@@ -42,6 +42,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $user->assignRole('user');
         $user->givePermissionTo('menu-chirp');
 
         event(new Registered($user));

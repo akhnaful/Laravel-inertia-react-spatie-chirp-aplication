@@ -37,4 +37,13 @@ class Report extends Model
     {
         return $this->morphTo();
     }
+    public function scopeFilterByTime($query, $filter)
+    {
+        return match ($filter) {
+            'daily' => $query->whereDate('created_at', today()),
+            'weekly' => $query->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]),
+            'monthly' => $query->whereMonth('created_at', now()->month),
+            default => $query,
+        };
+    }
 }

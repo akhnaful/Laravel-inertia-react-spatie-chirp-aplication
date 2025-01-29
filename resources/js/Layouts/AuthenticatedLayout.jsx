@@ -11,7 +11,6 @@ export default function AuthenticatedLayout({ header, children,}) {
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
-
     return (
         <div className="min-h-screen bg-gray-100">
             <nav className="border-b border-gray-100 bg-white">
@@ -31,7 +30,7 @@ export default function AuthenticatedLayout({ header, children,}) {
                                 >
                                     Dashboard
                                 </NavLink>
-                                {user?.permissions.includes("menu-chirp") && (
+                                {user?.permissions?.includes("menu-chirp") && (
                                 <NavLink href={route('chirps.index')} active={route().current('chirps.index')}>
                                     Chirps
                                 </NavLink>

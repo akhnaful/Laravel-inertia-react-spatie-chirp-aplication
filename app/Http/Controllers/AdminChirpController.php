@@ -18,7 +18,7 @@ class AdminChirpController extends Controller
     {
         $chirps = Chirp::with('user')->get();
         return Inertia::render('Admin/ChirpManager', [
-            'chirps' => $chirps
+            'chirps' => Chirp::with('user')->latest()->get()
         ]);
         // return Inertia::render("Admin/ChirpManager", ['chirps' => Chirp::with('user')->latest()->get()]);
     }

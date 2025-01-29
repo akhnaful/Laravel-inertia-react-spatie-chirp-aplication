@@ -8,7 +8,7 @@ export default function ChripsReport({ reports }) {
 
     const actionReport = (userId) => {
         if (confirm("Are you sure you want to delete this content?")) {
-            destroy(route("report.destroy", userId), {
+            destroy(route("report.destroy"|"admin.chirps.destroy", userId), {
                 onSuccess: () => {
                     reset();
                 },

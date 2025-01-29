@@ -7,6 +7,7 @@ use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminChirpController;
 use App\Http\Controllers\UserManageController;
+use App\Http\Controllers\AdminDasboardController;
 use App\Http\Controllers\ReportManagerController;
 
 Route::get('/', function () {
@@ -21,6 +22,10 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminDasboardController::class, 'dashboard']);
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
