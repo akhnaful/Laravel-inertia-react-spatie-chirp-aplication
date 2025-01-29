@@ -20,7 +20,8 @@ const DashboardAdmin = ({ initialStats, chartData }) => {
     }
   )
   
-
+// Di DashboardAdmin.jsx
+console.log('Received Chart Data:', chartData);
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="max-w-7xl mx-auto">
@@ -53,9 +54,10 @@ const DashboardAdmin = ({ initialStats, chartData }) => {
             <p className="text-3xl font-bold mt-2">{stats?.violationReports}</p>
           </div>
         </div>
-          <div className="mt-8 bg-white p-6 rounded-lg shadow">
-        <LineChart data={chartData} /> {/* Pastikan prop name sesuai */}
-      </div>
+        <div className="p-6">
+      <h2 className="text-2xl mb-4">Statistik Aktivitas</h2>
+      <LineChart data={chartData} />
+    </div>
       </div>
     </div>
   )

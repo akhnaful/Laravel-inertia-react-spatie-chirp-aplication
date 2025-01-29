@@ -35,38 +35,40 @@ const LineChart = ({ data }) => {
   };
 
   const chartData = {
-    labels: data?.labels,
+    labels: data?.labels || ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
     datasets: [
       {
         label: 'Pengguna Aktif',
-        data: data?.activeUsers,
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        data: data?.activeUsers || [0, 0, 0, 0, 0, 0, 0],
+        borderColor: '#FF6384',
+        fill: false
       },
       {
         label: 'Total Chirps',
-        data: data?.totalChirps,
-        borderColor: 'rgb(53, 162, 235)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        data: data?.totalChirps || [0, 0, 0, 0, 0, 0, 0],
+        borderColor: '#36A2EB',
+        fill: false
       },
       {
-        label: 'Laporan Pelanggaran',
-        data: data?.violationReports,
-        borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
-      },
-    ],
+        label: 'Laporan',
+        data: data?.violationReports || [0, 0, 0, 0, 0, 0, 0],
+        borderColor: '#4BC0C0',
+        fill: false
+      }
+    ]
   };
 
-  return <Line options={options} data={chartData} />;
+  return (
+    <div className="h-96">
+      <Line 
+        data={chartData}
+        options={{
+          responsive: true,
+          maintainAspectRatio: false
+        }}
+      />
+    </div>
+  );
 };
-LineChart.defaultProps = {
-    data: {
-      labels: [],
-      activeUsers: [],
-      totalChirps: [],
-      violationReports: []
-    }
-  };
 
 export default LineChart;
