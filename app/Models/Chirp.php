@@ -39,4 +39,8 @@ class Chirp extends Model
         default => $query,
     };
     }
+    public function scopeCreatedBetween($query, $start, $end)
+    {
+    return $query->whereBetween('created_at', [$start, $end]);
+    }
 }

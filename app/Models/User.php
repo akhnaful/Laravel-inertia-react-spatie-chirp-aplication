@@ -84,4 +84,8 @@ class User extends Authenticatable implements MustVerifyEmail
             now()->subMinutes($minutes)
         );
     }
+    public function scopeLastActiveBetween($query, $start, $end)
+    {
+    return $query->whereBetween('last_active_at', [$start, $end]);
+    }
 }

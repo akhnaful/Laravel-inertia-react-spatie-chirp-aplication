@@ -1,7 +1,8 @@
 import { router } from '@inertiajs/react'
 import { useEffect, useState } from 'react'
+import LineChart from './LineChart';
 
-const DashboardAdmin = ({ initialStats }) => {
+const DashboardAdmin = ({ initialStats, chartData }) => {
   const [timeFilter, setTimeFilter] = useState('daily')
   const [stats, setStats] = useState(initialStats)
 
@@ -52,6 +53,9 @@ const DashboardAdmin = ({ initialStats }) => {
             <p className="text-3xl font-bold mt-2">{stats?.violationReports}</p>
           </div>
         </div>
+          <div className="mt-8 bg-white p-6 rounded-lg shadow">
+        <LineChart data={chartData} /> {/* Pastikan prop name sesuai */}
+      </div>
       </div>
     </div>
   )
