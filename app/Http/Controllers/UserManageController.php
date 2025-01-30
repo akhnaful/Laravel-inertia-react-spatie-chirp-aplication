@@ -15,7 +15,7 @@ class UserManageController extends Controller
      */
     public function index()
     {
-        $users = User::withCount('chirps')->get();
+        $users = User::with('roles')->withCount('chirps')->get();
         return Inertia::render('Admin/UserManage', [
             'users' => $users,
         ]);
@@ -62,11 +62,15 @@ class UserManageController extends Controller
             'status' => 'in:active,banned',
             'role' => 'in:user,moderator,admin',
         ]);
-    
+        
+        // Update status di tabel users
         $usermanager->update([
             'status' => $request->status ?? $usermanager->status,
-            'role' => $request->role ?? $usermanager->role,
         ]);
+        // Update role menggunakan Spatie
+        if ($request->role) {
+            $usermanager->syncRoles($request->role);
+        }
     
         return redirect()->back()->with(['success' => 'User updated successfully.']);
     }

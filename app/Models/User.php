@@ -26,10 +26,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'status',
-        'role',
         'last_active_at',
     ];
-
+    protected $appends = ['role_names'];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -51,6 +50,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function getRoleNamesAttribute()
+    {
+        return $this->roles->pluck('name');
     }
 
     public function chirps(): HasMany

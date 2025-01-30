@@ -41,10 +41,8 @@ export default function UserManage({users, flash}) {
     );
 
     const handleRoleChange = (id, newRole) => {
-    // Fitur merubah role user
-        Inertia.put(route('usermanager.update', { id: id }), { role: newRole }, {
-            // onSuccess: () => toast.success("User role updated successfully!"),
-            // onError: () => toast.error("Failed to update role!"),
+        Inertia.put(route('usermanager.update', id), { role: newRole }, {
+            onSuccess: () => Inertia.reload(),
         });
     };
 
@@ -108,17 +106,13 @@ export default function UserManage({users, flash}) {
                                             <TableCell>{user.name}</TableCell>
                                             <TableCell>{user.email}</TableCell>
                                             <TableCell>{user.chirps_count}</TableCell>
-                                            <TableCell>{user.role}</TableCell>
+                                            <TableCell>{user.roles.length > 0 ? user.roles[0].name : 'No Role'}</TableCell>
                                             <TableCell>{user.status}</TableCell>
                                             <TableCell className="m-2">
 
                                                 {/* fitur */}
                                             
-                                                <select
-                                                    value={user.role}
-                                                    onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                                                    className="border rounded p-2 mr-2"
-                                                >
+                                                <select value={user.roles?.[0]?.name || ''} onChange={(e) => handleRoleChange(user.id, e.target.value)}>
                                                     <option value="user">User</option>
                                                     <option value="moderator">Moderator</option>
                                                     <option value="admin">Admin</option>
@@ -130,8 +124,6 @@ export default function UserManage({users, flash}) {
 
                                                 <Button onClick={() => handleDelete(user.id)} variant="destructive" >Delete</Button>
                                             
-
-
                                                 {/* fitur */}
 
                                             </TableCell>

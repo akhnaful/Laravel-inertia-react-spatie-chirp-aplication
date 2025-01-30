@@ -43,6 +43,6 @@ class ReportManagerController extends Controller
         } else {
             $reported->delete();
         }
-        return redirect(route('report.index'));
+        return redirect()->back()->with(['success' => 'User updated successfully.']);
     }
 }
